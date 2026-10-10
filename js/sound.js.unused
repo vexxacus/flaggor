@@ -1,0 +1,68 @@
+// sound.js
+// Små ljudeffekter byggda med Web Audio API - inga externa ljudfiler behövs,
+// vilket håller repot lätt och undviker licensfrågor. Respekterar en
+// mute-inställning som sparas i localStorage.
+
+const PREF_KEY = "flagquiz_sound_v1";
+let ctx = null;
+
+export function isSoundEnabled() {
+  return localStorage.getItem(PREF_KEY) !== "off";
+}
+
+export function setSoundEnabled(enabled) {
+  localStorage.setItem(PREF_KEY, enabled ? "on" : "off");
+}
+
+function getContext() {
+  if (!ctx) {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return null;
+    ctx = new AudioCtx();
+  }
+  if (ctx.state === "suspended") ctx.resume();
+  return ctx;
+}
+
+function tone({ freq, duration = 0.12, type = "sine", startAt = 0, gain = 0.05, glideTo = null }) {
+  if (!isSoundEnabled()) return;
+  const audio = getContext();
+  if (!audio) return;
+
+  const osc = audio.createOscillator();
+  const gainNode = audio.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, audio.currentTime + startAt);
+  if (glideTo) {
+    osc.frequency.exponentialRampToValueAtTime(glideTo, audio.currentTime + startAt + duration);
+  }
+  gainNode.gain.setValueAtTime(gain, audio.currentTime + startAt);
+  gainNode.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + startAt + duration);
+  osc.connect(gainNode).connect(audio.destination);
+  osc.start(audio.currentTime + startAt);
+  osc.stop(audio.currentTime + startAt + duration + 0.02);
+}
+
+/** Ljus, uppåtgående ton. Tonhöjden stiger med combo-nivån (1-4). */
+export function playCorrect(comboTier = 1) {
+  const base = 440 + (comboTier - 1) * 90;
+  tone({ freq: base, glideTo: base * 1.5, duration: 0.14, type: "sine", gain: 0.06 });
+}
+
+/** Kort, låg "buzz" vid fel svar. */
+export function playIncorrect() {
+  tone({ freq: 180, glideTo: 110, duration: 0.18, type: "sawtooth", gain: 0.045 });
+}
+
+/** Liten stigande tre-tons-fanfar för en perfekt rond. */
+export function playPerfectRound() {
+  tone({ freq: 523, duration: 0.12, startAt: 0, gain: 0.06 });
+  tone({ freq: 659, duration: 0.12, startAt: 0.12, gain: 0.06 });
+  tone({ freq: 784, duration: 0.22, startAt: 0.24, gain: 0.07 });
+}
+
+/** Liten "pling" när en ny combo-nivå nås (t.ex. vid 3, 5, 8, 12 i rad). */
+export function playComboLevelUp() {
+  tone({ freq: 660, duration: 0.09, gain: 0.05 });
+  tone({ freq: 990, duration: 0.14, startAt: 0.08, gain: 0.05 });
+}

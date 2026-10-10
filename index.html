@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Flaggquiz - Gissa flaggor, huvudstäder och länder</title>
+  <meta name="description" content="Gissa flaggor, huvudstäder och peka ut länder på kartan - med rolig, verklig trivia inbyggd i varje runda." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <header class="fq-header">
+    <a class="fq-logo" href="/">
+      <svg class="fq-logo-icon" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+        <rect width="28" height="28" rx="8" fill="var(--fq-primary)" />
+        <rect x="8" y="6" width="2" height="16" rx="1" fill="#fff" />
+        <path d="M10 7 L20 10.5 L10 14 Z" fill="var(--fq-gold)" />
+      </svg>
+      <span>Flaggquiz</span>
+    </a>
+    <nav class="fq-mode-nav" id="mode-nav" hidden>
+      <button type="button" class="fq-pill-base fq-mode-nav-link" data-mode="flags" aria-label="Flaggor">🏳️ <span>Flaggor</span></button>
+      <button type="button" class="fq-pill-base fq-mode-nav-link" data-mode="capitals" aria-label="Huvudstäder">🏙️ <span>Huvudstäder</span></button>
+      <button type="button" class="fq-pill-base fq-mode-nav-link" data-mode="map" aria-label="Karta">🗺️ <span>Karta</span></button>
+    </nav>
+    <span id="daily-streak-badge" class="fq-daily-streak" hidden></span>
+    <nav class="fq-nav">
+      <a href="highscores.html">Highscore</a>
+      <a href="about.html">Om oss</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="fq-hub" id="hub">
+      <h1>Välj ett spelläge</h1>
+      <p id="load-status" class="fq-status">Laddar landsdata...</p>
+      <div class="fq-mode-grid">
+        <button type="button" class="fq-mode-card" data-mode="flags">
+          <span class="fq-mode-icon">🏳️</span>
+          <h2>Gissa flaggan</h2>
+          <p>Se en flagga och välj rätt land bland åtta alternativ.</p>
+        </button>
+        <button type="button" class="fq-mode-card" data-mode="capitals">
+          <span class="fq-mode-icon">🏙️</span>
+          <h2>Gissa huvudstaden</h2>
+          <p>Skriv huvudstaden till landet som visas.</p>
+        </button>
+        <button type="button" class="fq-mode-card" data-mode="map">
+          <span class="fq-mode-icon">🗺️</span>
+          <h2>Peka på kartan</h2>
+          <p>Tryck där du tror att landet ligger på världskartan.</p>
+        </button>
+        <button type="button" class="fq-mode-card fq-mode-card--soon" data-mode="mystery" disabled aria-disabled="true">
+          <span class="fq-mode-badge">Snart</span>
+          <span class="fq-mode-icon">🔎</span>
+          <h2>Dagens mysterieland</h2>
+          <p>Lös dagens land med så få ledtrådar som möjligt.</p>
+        </button>
+      </div>
+    </section>
+
+    <section id="game-area" class="fq-game-area" aria-live="polite"></section>
+
+    <section class="fq-ad-slot" aria-hidden="true">
+      <span class="fq-ad-label">Annons</span>
+      <!-- Google AdSense-enhet placeras här (footer/sidebar-område, aldrig mitt i en runda). -->
+    </section>
+  </main>
+
+  <footer class="fq-footer">
+    <p>
+      Flaggbilder från <a href="https://flagcdn.com" target="_blank" rel="noopener">FlagCDN</a>
+      (av <a href="https://flagpedia.net" target="_blank" rel="noopener">Flagpedia</a>).
+    </p>
+    <nav class="fq-footer-nav">
+      <a href="rules.html">Regler</a>
+      <a href="privacy.html">Integritetspolicy</a>
+      <a href="about.html">Om oss</a>
+      <a href="highscores.html">Highscore</a>
+    </nav>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

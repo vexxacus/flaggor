@@ -1,0 +1,44 @@
+[
+  {
+    "id": "weapon-flag",
+    "region": "afrika",
+    "question": "Vilket land har ett automatgevär (en AK-47) på sin nationalflagga?",
+    "answerCca2": "mz",
+    "difficulty": 1
+  },
+  {
+    "id": "non-rectangular-flag",
+    "region": "asien",
+    "question": "Vilket land har världens enda flagga som inte är rektangulär?",
+    "answerCca2": "np",
+    "difficulty": 1
+  },
+  {
+    "id": "olympic-twins-1936",
+    "region": "europa",
+    "question": "Vilka två länder visade sig ha identiska flaggor i samband med OS 1936, vilket ledde till att det ena landet lade till en krona på sin flagga?",
+    "answerCca2": ["li", "ht"],
+    "difficulty": 2
+  },
+  {
+    "id": "two-sided-flag",
+    "region": "sydamerika",
+    "question": "Vilket land är det enda i världen med olika motiv på flaggans fram- och baksida?",
+    "answerCca2": "py",
+    "difficulty": 2
+  },
+  {
+    "id": "flip-flag-wartime",
+    "region": "asien",
+    "question": "Vilket land vänder på sin flagga (rött fält överst istället för blått) om landet befinner sig i krig?",
+    "answerCca2": "ph",
+    "difficulty": 2
+  },
+  {
+    "id": "oldest-flag",
+    "region": "europa",
+    "question": "Vilket lands flagga räknas som världens äldsta nationalflagga som fortfarande används - enligt legenden sedan år 1219?",
+    "answerCca2": "dk",
+    "difficulty": 1
+  }
+]

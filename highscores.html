@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Highscore - Flaggquiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="fq-header">
+    <a class="fq-logo" href="/">
+      <svg class="fq-logo-icon" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+        <rect width="28" height="28" rx="8" fill="var(--fq-primary)" />
+        <rect x="8" y="6" width="2" height="16" rx="1" fill="#fff" />
+        <path d="M10 7 L20 10.5 L10 14 Z" fill="var(--fq-gold)" />
+      </svg>
+      <span>Flaggquiz</span>
+    </a>
+    <nav class="fq-nav">
+      <a href="highscores.html">Highscore</a>
+      <a href="about.html">Om oss</a>
+    </nav>
+  </header>
+
+  <main class="fq-content-page">
+    <h1>Highscore</h1>
+    <p>
+      Highscore är antalet rätt i rad (streak) du som mest haft under en
+      rond - inte poäng. Lagras just nu lokalt i din webbläsare per
+      spelläge. När kontosystem (Firebase Auth + Firestore) kopplas in
+      kommer denna sida istället visa globala topplistor - se
+      <code>spelkoncept.md</code> för planen.
+    </p>
+
+    <div class="fq-highscore-tabs">
+      <button type="button" data-mode="flags" class="fq-pill-base fq-hs-tab active">Flaggor</button>
+      <button type="button" data-mode="capitals" class="fq-pill-base fq-hs-tab">Huvudstäder</button>
+      <button type="button" data-mode="map" class="fq-pill-base fq-hs-tab">Karta</button>
+      <button type="button" data-mode="mystery" class="fq-pill-base fq-hs-tab">Mysterium</button>
+    </div>
+    <ol id="hs-list" class="fq-highscore-list">
+      <li>Spela en runda för att se din highscore här!</li>
+    </ol>
+    <button type="button" id="hs-share-btn" class="fq-share-btn" hidden>Dela min bästa streak</button>
+  </main>
+
+  <footer class="fq-footer">
+    <nav class="fq-footer-nav">
+      <a href="rules.html">Regler</a>
+      <a href="privacy.html">Integritetspolicy</a>
+      <a href="about.html">Om oss</a>
+      <a href="highscores.html">Highscore</a>
+    </nav>
+  </footer>
+
+  <script type="module">
+    import { getHighscores } from "./js/local-highscores.js";
+
+    const list = document.getElementById("hs-list");
+    const tabs = document.querySelectorAll(".fq-hs-tab");
+    const shareBtn = document.getElementById("hs-share-btn");
+
+    const MODE_LABELS = { flags: "Flaggor", capitals: "Huvudstäder", map: "Karta", mystery: "Mysterium" };
+
+    let currentMode = "flags";
+    let currentTopScore = null;
+
+    function render(mode) {
+      currentMode = mode;
+      const scores = getHighscores(mode);
+      currentTopScore = scores[0] || null;
+
+      if (mode === "mystery") {
+        // Dagens mysterieland är inte byggt än - ingen highscore kan finnas här.
+        list.innerHTML = "<li>Kommer snart - Dagens mysterieland är inte tillgängligt än.</li>";
+        shareBtn.hidden = true;
+        return;
+      }
+
+      if (!scores.length) {
+        list.innerHTML = "<li>Ingen highscore än - bli först!</li>";
+        shareBtn.hidden = true;
+        return;
+      }
+      list.innerHTML = scores
+        .map(
+          (s) =>
+            `<li>${s.bestStreak} rätt i rad${s.region ? ` &middot; ${s.region}` : ""} &middot; ${new Date(s.date).toLocaleDateString("sv-SE")}</li>`
+        )
+        .join("");
+      shareBtn.hidden = false;
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        render(tab.dataset.mode);
+      });
+    });
+
+    shareBtn.addEventListener("click", () => {
+      if (!currentTopScore) return;
+      const text = `🔥 Min bästa streak i ${MODE_LABELS[currentMode]} på Flaggquiz: ${currentTopScore.bestStreak} rätt i rad! Klarar du bättre?`;
+      if (navigator.share) {
+        navigator.share({ text, url: location.href }).catch(() => {});
+      } else {
+        navigator.clipboard?.writeText(text);
+        alert("Resultat kopierat till urklipp - klistra in var du vill dela det!");
+      }
+    });
+
+    render("flags");
+  </script>
+</body>
+</html>

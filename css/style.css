@@ -1,0 +1,673 @@
+/* ==========================================================================
+   Flaggquiz - designsystem (brand kit v2)
+   Riktning: "Modern EdTech" (Duolingo x Airbnb/Linear) - ljus, neutral botten
+   så flaggornas färger poppar, mjuka färgade skuggor istället för hårda
+   linjer, generösa rundade hörn, och små taktila mikroanimationer.
+   v2 (AD-granskning): bytte ut default-Tailwind-tonerna (#3b82f6 etc, som
+   delas av tusentals andra appar) mot en djupare, mer mättad kobolt och en
+   ny guld/senapsaccent - guldet är det som gör spelet igenkännbart i en
+   skärmdump (streaks, badges, firande-moment) istället för "ännu en blå app".
+   Se spelkoncept.md för bakgrund.
+   ========================================================================== */
+
+:root {
+  /* Yta / bakgrund - ytterst svagt varm ton istället för kliniskt blåvit */
+  --fq-bg: #f7f7f5;
+  --fq-surface: #ffffff;
+  --fq-border: #e5e7eb;
+
+  /* Text */
+  --fq-text: #111827;
+  --fq-text-muted: #6b7280;
+
+  /* Accentfarger - djupare kobolt istället för default-Tailwind-blå */
+  --fq-primary: #2554e8;
+  --fq-primary-dark: #1739a8;
+  --fq-primary-bg: #ebf0ff;
+
+  --fq-correct: #16a362;
+  --fq-correct-dark: #0f7a48;
+  --fq-correct-bg: #eafbf2;
+
+  --fq-incorrect: #e1483c;
+  --fq-incorrect-dark: #b7291f;
+  --fq-incorrect-bg: #fdecea;
+
+  /* Guld/senap - varumärkets signaturfärg för streaks, badges och
+     firande-ögonblick. Inget annat i paletten fyller den rollen. */
+  --fq-gold: #f2a93b;
+  --fq-gold-dark: #c9821f;
+  --fq-gold-bg: #fef3df;
+  /* Mörkare guld för TEXT - --fq-gold-dark klarar bara 2,9:1 mot guld-
+     bakgrunden, den här klarar WCAG AA (4,5:1). */
+  --fq-gold-text: #8a5a10;
+
+  /* Rundade horn - skala */
+  --fq-radius-lg: 22px;   /* kort */
+  --fq-radius-md: 14px;   /* knappar/falt */
+  --fq-radius-pill: 999px; /* badges/pills */
+
+  /* Mjuka, fargade skuggor istallet for harda linjer */
+  --fq-shadow-sm: 0 1px 2px rgba(17, 24, 39, 0.05);
+  --fq-shadow-md: 0 12px 28px rgba(17, 24, 39, 0.07), 0 2px 8px rgba(17, 24, 39, 0.04);
+  --fq-shadow-primary: 0 10px 24px rgba(37, 84, 232, 0.24);
+  --fq-shadow-correct: 0 10px 22px rgba(22, 163, 98, 0.22);
+  --fq-shadow-gold: 0 10px 22px rgba(242, 169, 59, 0.28);
+
+  /* Typografi: Inter för UI/brödtext (redan bra svenskt teckenstöd), Space
+     Grotesk för rubriker/logotyp/streak-siffror - ger firande-ögonblick och
+     varumärket mer karaktär än att allt ser ut som ett dashboard. */
+  --fq-font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--fq-bg);
+  color: var(--fq-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-weight: 800; letter-spacing: -0.01em; }
+h1 { font-family: var(--fq-font-display); }
+
+.fq-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: var(--fq-surface);
+  border-bottom: 1px solid var(--fq-border);
+  flex-wrap: wrap;
+}
+.fq-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--fq-font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: var(--fq-text);
+}
+.fq-logo-icon { flex-shrink: 0; }
+.fq-nav a { margin-left: 1.25rem; color: var(--fq-primary-dark); text-decoration: none; font-weight: 600; }
+
+/* Delad pill-bas för alla klickbara "chip"-element i headern och på
+   highscore-sidan (spellägen, flikar) - tidigare uppfann varje ny
+   komponent sin egen pill-stil, nu delar de visuellt språk. */
+.fq-pill-base {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--fq-text-muted);
+  background: transparent;
+  border: 1px solid var(--fq-border);
+  border-radius: var(--fq-radius-pill);
+  padding: 0.4rem 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.fq-pill-base:focus-visible { background: var(--fq-primary-bg); color: var(--fq-primary-dark); outline: none; }
+.fq-pill-base--active { background: var(--fq-primary-bg); color: var(--fq-primary-dark); border-color: var(--fq-primary); }
+
+/* Daglig besöks-streak (skiljer sig från in-round-streaken) - liten guld-pill
+   i headern som gör den redan insamlade datan synlig och känns som en
+   belöningssignal snarare än ett systemmeddelande. */
+.fq-daily-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--fq-font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--fq-gold-text);
+  background: var(--fq-gold-bg);
+  border-radius: var(--fq-radius-pill);
+  padding: 0.3rem 0.7rem;
+  white-space: nowrap;
+}
+.fq-daily-streak[hidden] { display: none; }
+
+/* Kompakt spellägesväljare i headern - ersätter den stora "Välj ett
+   spelläge"-hub-sektionen så snart ett läge är valt, så att spelytan hamnar
+   above the fold istället för att ligga under fyra stora kort. */
+.fq-mode-nav {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  flex: 1;
+  justify-content: center;
+}
+.fq-mode-nav[hidden] { display: none; }
+.fq-mode-nav-link { border-color: transparent; }
+.fq-mode-nav-link--active { background: var(--fq-primary-bg); color: var(--fq-primary-dark); border-color: var(--fq-primary); }
+
+@media (max-width: 640px) {
+  .fq-mode-nav-link span,
+  .fq-daily-streak span { display: none; } /* bara ikon/siffra på smala skärmar för att spara plats */
+  .fq-mode-nav-link { padding: 0.4rem 0.6rem; }
+}
+
+main { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+
+.fq-hub h1 { text-align: center; font-size: 2rem; }
+.fq-status { text-align: center; color: var(--fq-text-muted); }
+
+.fq-mode-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.fq-mode-card {
+  background: var(--fq-surface);
+  border: 1px solid var(--fq-border);
+  border-radius: var(--fq-radius-lg);
+  padding: 1.75rem 1.25rem;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: var(--fq-shadow-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  font: inherit;
+  color: inherit;
+}
+.fq-mode-card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: var(--fq-shadow-md);
+  border-color: var(--fq-primary);
+  outline: none;
+}
+.fq-mode-card:active { transform: translateY(-1px) scale(0.98); }
+.fq-mode-icon { font-size: 2.2rem; display: block; margin-bottom: 0.5rem; }
+
+/* "Snart"-läge: nedtonat snarare än uppmärksamhetssökande, eftersom det inte
+   är byggt än - ska inte se ut som ett fullvärdigt, klickbart spelläge. */
+.fq-mode-card--soon { position: relative; opacity: 0.7; }
+.fq-mode-card--soon:focus-visible { opacity: 1; }
+.fq-mode-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: var(--fq-gold-bg);
+  color: var(--fq-gold-text);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--fq-radius-pill);
+}
+
+.fq-game-area { margin-top: 2rem; min-height: 200px; }
+
+/* Segmenterad progress (Duolingo-stil prickar) i stallet for en platt bar */
+.fq-progress {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.fq-progress-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--fq-border);
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.fq-progress-dot.fq-dot-done { background: var(--fq-correct); }
+.fq-progress-dot.fq-dot-current {
+  background: var(--fq-primary);
+  transform: scale(1.35);
+  box-shadow: 0 0 0 4px var(--fq-primary-bg);
+}
+
+.fq-scorebar { text-align: center; font-size: 1rem; margin-bottom: 1rem; font-weight: 600; }
+
+.fq-flag-card, .fq-capital-card {
+  background: var(--fq-surface);
+  border: 1px solid var(--fq-border);
+  border-radius: var(--fq-radius-lg);
+  padding: 1.75rem;
+  text-align: center;
+  box-shadow: var(--fq-shadow-md);
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.fq-flag-card img {
+  border-radius: 10px;
+  border: 1px solid var(--fq-border);
+  box-shadow: var(--fq-shadow-sm);
+  max-width: 100%;
+  animation: fq-breathe 3.6s ease-in-out infinite;
+}
+@keyframes fq-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.015); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fq-flag-card img { animation: none; }
+}
+
+.fq-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.fq-option-btn {
+  padding: 0.95rem;
+  border-radius: var(--fq-radius-md);
+  border: 1.5px solid var(--fq-border);
+  background: var(--fq-surface);
+  color: var(--fq-text);
+  font: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  min-height: 44px;
+  cursor: pointer;
+  box-shadow: var(--fq-shadow-sm);
+  transition: transform 0.12s ease, box-shadow 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.fq-option-btn:focus-visible {
+  border-color: var(--fq-primary);
+  box-shadow: var(--fq-shadow-md);
+  transform: translateY(-2px);
+  outline: none;
+}
+.fq-option-btn:active { transform: scale(0.97); }
+.fq-option-btn:disabled { cursor: default; }
+
+/* Rätt/fel-reaktion på knappen man faktiskt klickade på */
+.fq-option-correct {
+  background: var(--fq-correct-bg) !important;
+  border-color: var(--fq-correct) !important;
+  color: var(--fq-correct-dark) !important;
+  box-shadow: var(--fq-shadow-correct) !important;
+  animation: fq-bounce-pop 0.4s ease;
+}
+.fq-option-incorrect {
+  background: var(--fq-incorrect-bg) !important;
+  border-color: var(--fq-incorrect) !important;
+  color: var(--fq-incorrect-dark) !important;
+  animation: fq-shake 0.4s ease;
+}
+/* Visar rätt svar i grönt (utan studs) när man svarade fel eller tiden tog slut */
+.fq-option-reveal-correct {
+  background: var(--fq-correct-bg) !important;
+  border-color: var(--fq-correct) !important;
+  color: var(--fq-correct-dark) !important;
+}
+@keyframes fq-bounce-pop {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.08); }
+  60% { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+@keyframes fq-shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-7px); }
+  40%, 60% { transform: translateX(7px); }
+  100% { transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fq-option-correct, .fq-option-incorrect { animation: none; }
+}
+
+/* Efter svar: fäll ihop vyn så facit + Nästa-knappen syns direkt (särskilt på
+   mobil med åtta alternativ). Dölj alla knappar utom vald och rätt, och krymp
+   flaggan så att man slipper skrolla. */
+.fq-options-answered {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  justify-content: center;
+}
+.fq-option-collapsed {
+  display: none !important;
+}
+.fq-flag-card-answered {
+  padding: 0.85rem;
+}
+.fq-flag-card-answered img {
+  max-height: 120px;
+  width: auto;
+  animation: none;
+  transition: max-height 0.25s ease, padding 0.25s ease;
+}
+@media (max-width: 600px) {
+  .fq-flag-card-answered img { max-height: 90px; }
+}
+
+.fq-capital-form { display: flex; gap: 0.5rem; margin-top: 1rem; justify-content: center; }
+.fq-capital-form input {
+  padding: 0.8rem 1rem; font-size: 1rem; border-radius: var(--fq-radius-md);
+  border: 1.5px solid var(--fq-border); min-width: 200px; font: inherit;
+}
+.fq-capital-form input:focus { border-color: var(--fq-primary); outline: none; box-shadow: 0 0 0 3px var(--fq-primary-bg); }
+.fq-capital-form button {
+  padding: 0.8rem 1.4rem; border-radius: var(--fq-radius-md); border: none;
+  background: var(--fq-primary); color: white; font: inherit; font-weight: 700; cursor: pointer; min-height: 44px;
+  box-shadow: var(--fq-shadow-primary); transition: transform 0.12s ease, background 0.15s ease;
+}
+.fq-capital-form button:active { transform: scale(0.97); }
+
+.fq-map-wrap { border: 1px solid var(--fq-border); border-radius: var(--fq-radius-lg); overflow: hidden; box-shadow: var(--fq-shadow-md); }
+.fq-map { height: 420px; transition: height 0.25s ease; }
+/* När man svarat: krymp kartan så feedback + Nästa-knappen ryms above the fold */
+.fq-map-wrap-answered .fq-map { height: 240px; }
+@media (max-width: 600px) {
+  .fq-map-wrap-answered .fq-map { height: 180px; }
+}
+.fq-map-prompt { padding: 0.85rem 1.1rem; background: var(--fq-surface); font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; }
+.fq-map-prompt-text { flex: 1 1 auto; }
+.fq-map-confirm-btn {
+  flex: 0 0 auto;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--fq-radius-md);
+  border: none;
+  background: var(--fq-primary);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  min-height: 44px;
+  cursor: pointer;
+  box-shadow: var(--fq-shadow-sm);
+  transition: transform 0.12s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.fq-map-confirm-btn:active:not(:disabled) { transform: scale(0.97); }
+.fq-map-confirm-btn:disabled { opacity: 0.45; cursor: default; }
+.fq-map-missing, .fq-error {
+  background: #fff7ed; border: 1px solid #fdba74; border-radius: var(--fq-radius-lg);
+  padding: 1.25rem;
+}
+
+.fq-feedback {
+  display: none;
+  margin-top: 1.25rem;
+  padding: 1.5rem;
+  border-radius: var(--fq-radius-lg);
+  border: 2px solid var(--fq-border);
+  box-shadow: var(--fq-shadow-md);
+}
+.fq-feedback.fq-visible { display: block; }
+.fq-feedback.fq-correct { border-color: var(--fq-correct); background: var(--fq-correct-bg); }
+.fq-feedback.fq-incorrect { border-color: var(--fq-incorrect); background: var(--fq-incorrect-bg); }
+.fq-feedback-head { display: flex; align-items: center; gap: 0.5rem; font-weight: 800; font-size: 1.15rem; margin-bottom: 0.35rem; }
+.fq-feedback-icon { display: inline-block; font-size: 1.3rem; }
+.fq-feedback-icon.fq-icon-bounce { animation: fq-bounce-pop 0.5s ease; }
+.fq-feedback-icon.fq-icon-shake { animation: fq-shake 0.5s ease; }
+.fq-fact { font-style: italic; color: #334155; }
+.fq-nearmiss { color: #92400e; }
+.fq-map-note { color: var(--fq-text-muted); font-size: 0.9rem; }
+.fq-next-btn, .fq-replay-btn, .fq-share-btn, .fq-region-btn {
+  font: inherit;
+  margin-top: 0.75rem; padding: 0.75rem 1.4rem; border-radius: var(--fq-radius-md);
+  border: none; background: var(--fq-primary); color: white; font-weight: 700;
+  cursor: pointer; min-height: 44px; box-shadow: var(--fq-shadow-primary);
+  transition: transform 0.12s ease, background 0.15s ease;
+}
+.fq-next-btn:active, .fq-replay-btn:active, .fq-share-btn:active, .fq-region-btn:active { transform: scale(0.97); }
+.fq-share-btn, .fq-region-btn { background: var(--fq-correct-dark); box-shadow: var(--fq-shadow-correct); margin-left: 0.5rem; }
+
+.fq-summary {
+  position: relative; overflow: visible; text-align: center; padding: 2rem 1.5rem;
+  background: var(--fq-surface); border-radius: var(--fq-radius-lg); box-shadow: var(--fq-shadow-md);
+  border: 1px solid var(--fq-border);
+}
+.fq-perfect-badge {
+  display: inline-block; margin-bottom: 0.5rem; padding: 0.4rem 1rem;
+  background: var(--fq-gold-bg); color: var(--fq-gold-text); border-radius: var(--fq-radius-pill); font-weight: 800;
+  animation: fq-bounce-pop 0.5s ease;
+}
+.fq-summary-tally { font-family: var(--fq-font-display); font-size: 1.6rem; font-weight: 700; margin: 0.25rem 0 0; }
+.fq-summary-score { color: var(--fq-text-muted); font-size: 0.9rem; margin: 0.15rem 0 0.75rem; }
+
+/* Konfetti (ren CSS, inga bibliotek) - triggas via JS med slumpade inline-stilar */
+.fq-confetti-piece {
+  position: absolute; top: -10px; width: 8px; height: 14px; opacity: 0.9;
+  animation-name: fq-confetti-fall; animation-timing-function: ease-in; animation-fill-mode: forwards;
+  pointer-events: none;
+}
+@keyframes fq-confetti-fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(220px) rotate(540deg); opacity: 0; }
+}
+
+/* Regionval */
+.fq-region-select { text-align: center; }
+.fq-region-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem; margin-top: 1rem;
+}
+/* Guld vänsterkant skiljer regionval visuellt från svarsalternativ
+   (.fq-option-btn) - annars är korten annars identiska och kan förväxlas
+   med en fråga i spelet snarare än ett förval innan rundan börjar. */
+.fq-region-card {
+  padding: 1.1rem; border-radius: var(--fq-radius-md); border: 1.5px solid var(--fq-border);
+  border-left: 4px solid var(--fq-gold);
+  background: var(--fq-surface); font: inherit; font-weight: 700; cursor: pointer;
+  min-height: 44px; box-shadow: var(--fq-shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.fq-region-card:focus-visible {
+  border-color: var(--fq-gold-dark); border-left-color: var(--fq-gold-dark);
+  box-shadow: var(--fq-shadow-gold); transform: translateY(-2px); outline: none;
+}
+.fq-region-card:active { transform: scale(0.97); }
+
+/* Lägesval på kartspelet: kort med rubrik + förklarande underrad */
+.fq-map-mode-label { display: block; font-weight: 800; font-size: 1.05rem; }
+.fq-map-mode-hint { display: block; margin-top: 0.35rem; font-weight: 500; font-size: 0.85rem; color: var(--fq-text-muted, #6b7280); }
+
+/* Streak-popup (flytande "🔥 X i rad!") */
+.fq-score-popup {
+  position: absolute; top: 0.6rem; right: 0.9rem; font-weight: 800; font-size: 1.5rem;
+  color: var(--fq-correct-dark); animation: fq-float-up 0.9s ease forwards; pointer-events: none;
+}
+@keyframes fq-float-up {
+  0% { opacity: 0; transform: translateY(6px) scale(0.9); }
+  20% { opacity: 1; transform: translateY(0) scale(1.1); }
+  100% { opacity: 0; transform: translateY(-28px) scale(1); }
+}
+
+/* Combo-badge - eskalerar genom varumärkets guld mot primärfärgen istället
+   för ett generiskt rött/orange/gult varningsschema, så att en stigande
+   combo känns som en medveten firande-progression snarare än en varning. */
+.fq-combo-badge {
+  display: inline-block; margin-left: 0.5rem; padding: 0.2rem 0.7rem;
+  border-radius: var(--fq-radius-pill); font-weight: 700; font-size: 0.85rem;
+  background: var(--fq-gold-bg); color: var(--fq-gold-text);
+}
+.fq-combo-tier-2 { background: var(--fq-gold); color: #3d2800; } /* mörk text - vitt på guld gav bara 2:1 i kontrast */
+.fq-combo-tier-3 { background: var(--fq-primary-bg); color: var(--fq-primary-dark); }
+.fq-combo-tier-4 { background: var(--fq-primary); color: #fff; box-shadow: var(--fq-shadow-primary); }
+.fq-scorebar-pop { animation: fq-pop 0.3s ease; }
+@keyframes fq-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* Fade-in för nytt frågekort */
+.fq-fade-in { animation: fq-fade-in 0.25s ease; }
+@keyframes fq-fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Egen visuell "ram" istället för att annonsen flyter fritt i sidans vita
+   yta - både snyggare och i linje med de flesta annonsnätverks krav på att
+   annonser ska vara tydligt avgränsade från redaktionellt/spel-innehåll. */
+.fq-ad-slot {
+  position: relative;
+  min-height: 90px;
+  margin-top: 2rem;
+  padding: 1.5rem 1rem 1rem;
+  border: 1px dashed var(--fq-border);
+  border-radius: var(--fq-radius-lg);
+  background: var(--fq-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fq-ad-label {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.85rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--fq-text-muted);
+}
+
+.fq-content-page h1 { margin-top: 0; }
+
+.fq-highscore-tabs { display: flex; gap: 0.5rem; margin: 1rem 0; flex-wrap: wrap; }
+.fq-hs-tab { padding: 0.55rem 1.1rem; font-size: 1rem; }
+.fq-hs-tab.active { background: var(--fq-primary-bg); color: var(--fq-primary-dark); border-color: var(--fq-primary); }
+.fq-highscore-list { padding-left: 1.5rem; }
+
+.fq-footer {
+  text-align: center; padding: 2rem 1rem; color: var(--fq-text-muted); font-size: 0.9rem;
+  border-top: 1px solid var(--fq-border); margin-top: 2rem;
+}
+.fq-footer-nav a { margin: 0 0.6rem; color: var(--fq-text-muted); }
+
+@media (max-width: 600px) {
+  .fq-map { height: 320px; }
+}
+
+/* ==========================================================================
+   Hover-effekter bara på enheter med riktig muspekare. På touch "fastnar"
+   :hover annars på den knapp som råkar renderas där man nyss tryckte
+   (t.ex. att första svarsalternativet ser markerat ut efter regionvalet).
+   ========================================================================== */
+@media (hover: hover) and (pointer: fine) {
+  .fq-nav a:hover { text-decoration: underline; }
+  .fq-pill-base:hover { background: var(--fq-primary-bg); color: var(--fq-primary-dark); outline: none; }
+  .fq-mode-card--soon:hover { opacity: 1; }
+  .fq-capital-form button:hover { background: var(--fq-primary-dark); }
+  .fq-next-btn:hover, .fq-replay-btn:hover { background: var(--fq-primary-dark); }
+  .fq-share-btn:hover, .fq-region-btn:hover { background: #0c5f3a; }
+  .fq-map-confirm-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--fq-shadow-md); }
+  .fq-mode-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--fq-shadow-md);
+  border-color: var(--fq-primary);
+  outline: none;
+  }
+  .fq-flag-card:hover {
+  transform: rotate(-0.6deg) translateY(-2px);
+  box-shadow: 0 16px 32px rgba(17, 24, 39, 0.1), 0 4px 10px rgba(17, 24, 39, 0.05);
+  }
+  .fq-option-btn:hover:not(:disabled) {
+  border-color: var(--fq-primary);
+  box-shadow: var(--fq-shadow-md);
+  transform: translateY(-2px);
+  outline: none;
+  }
+  .fq-region-card:hover {
+  border-color: var(--fq-gold-dark); border-left-color: var(--fq-gold-dark);
+  box-shadow: var(--fq-shadow-gold); transform: translateY(-2px); outline: none;
+  }
+}
+
+/* ==========================================================================
+   Touch: inga grå tryckblixtar och ingen 300 ms-fördröjning/dubbeltryckszoom
+   på knappar.
+   ========================================================================== */
+button, a, .fq-option-btn, .fq-region-card, .fq-mode-card {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* "Snart"-kortet är inte klickbart */
+.fq-mode-card--soon:disabled { cursor: default; color: inherit; }
+
+/* ==========================================================================
+   Mobil (huvudmålgruppen): allt i en runda ska rymmas på en skärm utan att
+   man behöver scrolla - kompakt header, svarsalternativ i två kolumner och
+   en Nästa-knapp i full bredd.
+   ========================================================================== */
+@media (max-width: 640px) {
+  .fq-header {
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    padding: 0.5rem max(1rem, env(safe-area-inset-right)) 0.5rem max(1rem, env(safe-area-inset-left));
+  }
+  .fq-logo { font-size: 1.1rem; }
+  .fq-mode-nav { flex-wrap: nowrap; gap: 0.25rem; justify-content: flex-end; }
+  .fq-mode-nav-link {
+    min-width: 44px; min-height: 44px; justify-content: center;
+    padding: 0.3rem; font-size: 1.15rem;
+  }
+  .fq-nav a { margin-left: 0.9rem; }
+  /* Under en runda: dölj Highscore/Om oss i headern (de finns i sidfoten),
+     så att headern ryms på en rad och spelet får skärmhöjden. */
+  body.fq-in-game .fq-nav { display: none; }
+}
+
+@media (max-width: 600px) {
+  main { padding: 1rem; }
+  .fq-hub h1 { font-size: 1.6rem; margin: 0.5rem 0; }
+  .fq-mode-grid { gap: 0.6rem; margin-top: 1rem; }
+  .fq-mode-card {
+    display: grid; grid-template-columns: auto 1fr; column-gap: 0.9rem;
+    align-items: center; text-align: left; padding: 0.9rem 1rem;
+  }
+  .fq-mode-card .fq-mode-icon { grid-row: span 2; font-size: 1.9rem; margin: 0; }
+  .fq-mode-card h2 { margin: 0; font-size: 1.05rem; }
+  .fq-mode-card p { margin: 0.1rem 0 0; font-size: 0.88rem; color: var(--fq-text-muted); line-height: 1.35; }
+  .fq-mode-badge { top: 0.5rem; right: 0.6rem; }
+
+  .fq-game-area { margin-top: 0.5rem; }
+  .fq-region-select h2 { margin: 0.25rem 0 0.5rem; }
+  .fq-progress { margin-bottom: 0.5rem; gap: 0.35rem; }
+  .fq-progress-dot { width: 10px; height: 10px; }
+  .fq-scorebar { margin-bottom: 0.6rem; }
+
+  .fq-flag-card { padding: 0.9rem; }
+  .fq-flag-card img { max-height: 22vh; max-height: 22svh; width: auto; }
+  .fq-flag-card-answered { padding: 0.6rem; }
+  .fq-flag-card-answered img { max-height: 70px; }
+
+  .fq-options { grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.75rem; }
+  .fq-options-answered { grid-template-columns: 1fr 1fr; }
+  .fq-option-btn {
+    padding: 0.5rem 0.35rem; font-size: 0.92rem; line-height: 1.2;
+    min-height: 52px; hyphens: auto; -webkit-hyphens: auto; overflow-wrap: break-word;
+  }
+
+  .fq-capital-card { padding: 1rem; }
+  .fq-capital-card h2 { font-size: 1.2rem; margin: 0.5rem 0; }
+  .fq-capital-form input { min-width: 0; flex: 1; }
+
+  .fq-feedback { margin-top: 0.75rem; padding: 1rem; }
+  .fq-feedback h3 { margin: 0.25rem 0; }
+  .fq-feedback p { margin: 0.35rem 0; }
+  .fq-next-btn { width: 100%; }
+
+  .fq-summary { padding: 1.5rem 1rem; }
+  .fq-summary .fq-replay-btn,
+  .fq-summary .fq-region-btn,
+  .fq-summary .fq-share-btn { display: block; width: 100%; margin-left: 0; }
+  .fq-summary .fq-region-btn, .fq-summary .fq-share-btn {
+    background: var(--fq-surface); color: var(--fq-primary-dark);
+    border: 1.5px solid var(--fq-border); box-shadow: none;
+  }
+
+  .fq-ad-slot { margin-top: 1.25rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; scroll-behavior: auto !important; transition: none !important; }
+}
+
+.fq-next-btn:focus-visible { outline: 3px solid var(--fq-primary-bg); outline-offset: 2px; }

@@ -1,0 +1,226 @@
+{
+  "np": {
+    "fact": "Nepals flagga är den enda nationalflaggan i världen som inte är rektangulär - den består av två staplade trianglar.",
+    "tags": ["form", "unik"]
+  },
+  "dk": {
+    "fact": "Dannebrogen räknas som världens äldsta nationalflagga som fortfarande används. Enligt legenden föll den från himlen år 1219, men den är belagd först på 1300-talet.",
+    "tags": ["historia", "aldst"]
+  },
+  "mz": {
+    "fact": "Moçambique är det enda landet med ett automatgevär - en AK-47 - på sin nationalflagga.",
+    "tags": ["vapen", "unik"]
+  },
+  "py": {
+    "fact": "Paraguay är det enda landet vars flagga har olika motiv på fram- och baksidan.",
+    "tags": ["form", "unik"]
+  },
+  "td": {
+    "fact": "Tchads flagga är nästan identisk med Rumäniens - Tchads blå är bara lite mörkare. Flaggorna blev så lika 1989, när Rumänien tog bort riksvapnet ur mitten.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["ro"]
+  },
+  "ro": {
+    "fact": "Rumäniens flagga liknar Tchads så mycket att Tchad en gång övervägde att formellt protestera mot likheten.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["td"]
+  },
+  "ph": {
+    "fact": "Om Filippinerna befinner sig i krig vänds flaggan så att det röda fältet hamnar överst istället för det blå.",
+    "tags": ["historia", "unik"]
+  },
+  "li": {
+    "fact": "Liechtenstein lade till en gyllene krona på sin flagga 1937, efter att man i samband med OS 1936 upptäckt att flaggan var identisk med Haitis.",
+    "tags": ["historia", "forvaxling"],
+    "nearMissWith": ["ht"]
+  },
+  "ht": {
+    "fact": "Haitis flagga var identisk med Liechtensteins, något som upptäcktes i samband med OS 1936. Året efter lade Liechtenstein till en krona på sin flagga.",
+    "tags": ["historia", "forvaxling"],
+    "nearMissWith": ["li"]
+  },
+  "ch": {
+    "fact": "Schweiz flagga är kvadratisk - tillsammans med Vatikanstatens en av bara två kvadratiska nationalflaggor i världen.",
+    "tags": ["form", "unik"]
+  },
+  "va": {
+    "fact": "Vatikanstaten, världens minsta stat, har en kvadratisk flagga - precis som Schweiz.",
+    "tags": ["form", "unik"]
+  },
+  "us": {
+    "fact": "USA:s flagga har 50 stjärnor för delstaterna och 13 ränder för de ursprungliga kolonierna.",
+    "tags": ["historia"]
+  },
+  "ca": {
+    "fact": "Det röda lönnlövet mitt på Kanadas flagga fick sin nuvarande elva-uddade form när flaggan antogs 1965.",
+    "tags": ["historia", "form"]
+  },
+  "jp": {
+    "fact": "Den röda solskivan på Japans flagga symboliserar landets smeknamn \"den uppgående solens land\".",
+    "tags": ["symbolik"]
+  },
+  "kr": {
+    "fact": "Sydkoreas flagga har en röd-blå yin-yang-symbol (taegeuk) omgiven av fyra svarta trigram hämtade ur den kinesiska boken I Ching.",
+    "tags": ["symbolik"]
+  },
+  "cn": {
+    "fact": "Den stora gula stjärnan på Kinas flagga representerar kommunistpartiet, och de fyra mindre stjärnorna folket.",
+    "tags": ["symbolik"]
+  },
+  "br": {
+    "fact": "Brasiliens flagga har en blå himmelsglob som visar stjärnhimlen över Rio de Janeiro på morgonen den 15 november 1889, då republiken utropades.",
+    "tags": ["historia", "symbolik"]
+  },
+  "gb": {
+    "fact": "Storbritanniens Union Jack är en sammanslagning av tre korsflaggor: de engelska, skotska och irländska skyddshelgonens kors.",
+    "tags": ["historia", "symbolik"]
+  },
+  "za": {
+    "fact": "Sydafrikas flagga antogs 1994. Den liggande Y-formen symboliserar att olika delar av samhället går samman och fortsätter framåt tillsammans.",
+    "tags": ["symbolik", "historia"]
+  },
+  "ke": {
+    "fact": "Mitt på Kenyas flagga syns en masajsköld med två spjut i kors.",
+    "tags": ["symbolik"]
+  },
+  "bt": {
+    "fact": "Draken på Bhutans flagga är Druk, \"åskdraken\", och håller juveler i sina klor.",
+    "tags": ["symbolik"]
+  },
+  "mx": {
+    "fact": "Örnen som äter en orm på en kaktus på Mexikos flagga kommer från den aztekiska legenden om grundandet av Tenochtitlan.",
+    "tags": ["historia", "symbolik"]
+  },
+  "cy": {
+    "fact": "Cyperns flagga visar en kopparfärgad karta över ön tillsammans med två olivkvistar. Den och Kosovos är de enda nationalflaggorna som avbildar landets egen karta.",
+    "tags": ["unik", "form"]
+  },
+  "so": {
+    "fact": "Somalias ljusblå flaggfärg är inspirerad av FN-flaggan, som en hyllning till FN:s roll i landets självständighet.",
+    "tags": ["historia"]
+  },
+  "id": {
+    "fact": "Indonesiens flagga är nästan identisk med Monacos - skillnaden är proportionerna, Indonesiens flagga är bredare.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["mc", "pl"]
+  },
+  "mc": {
+    "fact": "Monacos flagga är nästan identisk med Indonesiens, men något smalare och mer kvadratisk i proportionerna.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["id", "pl"]
+  },
+  "ie": {
+    "fact": "Irlands flagga är Elfenbenskustens spegelvända - samma tre färger, fast i omvänd ordning.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["ci"]
+  },
+  "ci": {
+    "fact": "Elfenbenskustens flagga är Irlands spegelvända - samma tre färger, fast i omvänd ordning.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["ie"]
+  },
+  "nl": {
+    "fact": "Nederländernas flagga liknar Luxemburgs starkt - skillnaden är en mörkare blå nyans och ett annat höjd-bredd-förhållande.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["lu"]
+  },
+  "lu": {
+    "fact": "Luxemburgs flagga är nästan identisk med Nederländernas, men med en ljusare, mer himmelsblå ton.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["nl"]
+  },
+  "co": {
+    "fact": "Colombias gul-blå-röda flagga delar ursprung med Ecuadors och Venezuelas - alla tre härstammar från Gran Colombias flagga.",
+    "tags": ["historia", "forvaxling"],
+    "nearMissWith": ["ec", "ve"]
+  },
+  "ec": {
+    "fact": "Ecuadors flagga har samma gul-blå-röda färger som Colombia och Venezuela, men med ett vapen i mitten.",
+    "tags": ["historia", "forvaxling"],
+    "nearMissWith": ["co", "ve"]
+  },
+  "ve": {
+    "fact": "Venezuelas flagga delar ursprung med Colombias och Ecuadors. De åtta vita stjärnorna står för de åtta provinser som stod bakom självständighetsförklaringen 1811.",
+    "tags": ["historia", "forvaxling"],
+    "nearMissWith": ["co", "ec"]
+  },
+  "au": {
+    "fact": "Australiens flagga liknar Nya Zeelands - men Australien har sex vita stjärnor (inklusive den stora Samväldesstjärnan) medan Nya Zeeland har fyra röda.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["nz"]
+  },
+  "nz": {
+    "fact": "Nya Zeelands flagga har fyra röda, vitkantade stjärnor, medan Australiens har sex vita - annars är flaggorna slående lika.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["au"]
+  },
+  "no": {
+    "fact": "Norges flagga är röd med ett blått, vitkantat kors, medan Islands är blå med ett rött, vitkantat kors - nästan omvända färger.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["is"]
+  },
+  "is": {
+    "fact": "Islands flagga har nästan omvända färger jämfört med Norges - blått fält istället för rött, och ett rött kors med vit kant istället för ett blått.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["no"]
+  },
+  "si": {
+    "fact": "Sloveniens vit-blå-röda flagga liknar både Rysslands och Slovakiens - det är vapnet i övre hörnet som skiljer dem åt.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["sk", "ru"]
+  },
+  "sk": {
+    "fact": "Slovakiens flagga är nästan identisk med Sloveniens - skillnaden är det slovakiska riksvapnet till vänster.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["si"]
+  },
+  "ru": {
+    "fact": "Rysslands vita, blå och röda färger har påverkat flera andra slaviska länders flaggor. Den liknar särskilt Slovakiens och Sloveniens, som har sina vapen i flaggan.",
+    "tags": ["historia", "forvaxling"],
+    "nearMissWith": ["si"]
+  },
+  "ml": {
+    "fact": "Malis gröna, gula och röda flagga är Guineas i omvänd färgordning - och samma som Senegals, fast utan Senegals gröna stjärna.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["gn", "sn"]
+  },
+  "gn": {
+    "fact": "Guineas röda, gula och gröna flagga är Malis i omvänd färgordning.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["ml"]
+  },
+  "xk": {
+    "fact": "Kosovos flagga visar landets karta i guld på blå botten. De sex vita stjärnorna står för landets största folkgrupper.",
+    "tags": ["form", "unik"]
+  },
+  "sn": {
+    "fact": "Senegals flagga har samma grön-gul-röda ränder som Malis - det som skiljer är den gröna stjärnan i mitten.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["ml"]
+  },
+  "at": {
+    "fact": "Österrikes röd-vit-röda flagga liknar Lettlands. Skillnaden: Österrikes ränder är lika breda och röda, Lettlands vita rand är smalare och det röda mörkare.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["lv"]
+  },
+  "lv": {
+    "fact": "Lettlands flagga är mörkt karminröd med en smal vit rand - lätt att blanda ihop med Österrikes, som har tre lika breda ränder i klarare rött.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["at"]
+  },
+  "qa": {
+    "fact": "Qatars flagga är vinröd med nio vita uddar, medan Bahrains är röd med fem - flaggorna förväxlas ofta.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["bh"]
+  },
+  "bh": {
+    "fact": "Bahrains flagga har fem vita uddar som står för islams fem pelare. Grannen Qatars flagga är mörkare och har nio uddar.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["qa"]
+  },
+  "pl": {
+    "fact": "Polens flagga är vit överst och röd nederst - alltså tvärtom mot Indonesiens och Monacos, som är röda överst.",
+    "tags": ["forvaxling"],
+    "nearMissWith": ["id", "mc"]
+  }
+}
